@@ -38,8 +38,6 @@ const Navbar = ({ children }: NavbarProps) => {
 
   const { data: session, status } = useSession();
 
-  console.log("session -> ", session);
-
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className={themeMode}>
