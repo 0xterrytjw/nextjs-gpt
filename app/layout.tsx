@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "T2 Template 2.0",
-  description: "Build a clean fullstack app in minutes.",
+  title: "AI Semantic Search",
+  description: "",
 };
 
 export default function RootLayout({
