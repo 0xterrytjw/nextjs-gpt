@@ -1,6 +1,6 @@
-## T2 Template 2.0
+## AI Semantic Search
 
-Built with Next.js 13, Typescript, Tailwind, Prisma, and PostgreSQL. See package.json for more details. This project is still under development.
+Semantic search powered by LangChain, OpenAI and Next.js.
 
 ## Getting started
 
@@ -16,8 +16,6 @@ Thereafter, run the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to start using the app.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
