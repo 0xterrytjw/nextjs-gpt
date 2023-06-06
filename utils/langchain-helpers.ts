@@ -40,7 +40,7 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
     const llm = new OpenAI({
       modelName: "gpt-4",
       temperature: 0.9,
-      // maxTokens: 10, // response length
+      maxTokens: 10, // response length
     });
     const chain = loadQAStuffChain(llm); // loads StuffDocumentsChain which is a chain provided by LangChain that is used for question answering tasks over a small number of documents. It simply injects all input documents into the prompt as context and returns the answer to the question.
     // 8. Extract and concatenate page content from matched documents
