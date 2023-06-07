@@ -36,11 +36,32 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
   console.log(`Asking question: ${question}...`);
 
   if (queryResponse.matches.length) {
+    const encoder = new TextEncoder();
+    const stream = new TransformStream();
+    const writer = stream.writable.getWriter();
+
     // 7. Create an OpenAI instance and load the QAStuffChain
     const llm = new OpenAI({
-      modelName: "gpt-4",
+      modelName: "gpt-3.5-turbo",
       temperature: 0.9,
-      maxTokens: 10, // response length
+      maxTokens: 1024, // response length
+      streaming: true,
+      callbacks: [
+        {
+          handleLLMNewToken: async (token) => {
+            await writer.ready;
+            await writer.write(encoder.encode(`${token}`));
+          },
+          handleLLMEnd: async () => {
+            await writer.ready;
+            await writer.close();
+          },
+          handleLLMError: async (e) => {
+            await writer.ready;
+            await writer.abort(e);
+          },
+        },
+      ],
     });
     const chain = loadQAStuffChain(llm); // loads StuffDocumentsChain which is a chain provided by LangChain that is used for question answering tasks over a small number of documents. It simply injects all input documents into the prompt as context and returns the answer to the question.
     // 8. Extract and concatenate page content from matched documents
@@ -49,20 +70,18 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
       .join(" ");
 
     // 9. Execute the chain with input documents and question
-    const augmentedQuestion = `Question: ${question}
-          Condition: End your answer with "If you have further questions, feel free to ask away!"`;
+    const augmentedQuestion = `Question: ${question} 
+                                Condition: Answer the question with a short summary and tell me which section of the documentation to read more about the question. Only use information on Next.js 13 and in the context of the app/ directory.`;
 
-    console.log("augmentedQuestion --> ", augmentedQuestion);
-    const result = await chain.call({
+    chain.call({
       input_documents: [new Document({ pageContent: concatenatedPageContent })],
       question: augmentedQuestion,
     });
-    // 10. Log the answer
-    console.log(`Answer: ${result.text}`);
-    return result.text;
+
+    return stream.readable;
   } else {
     // 11. Log that there are no matches, so GPT-3 will not be queried
-    console.log("Since there are no matches, GPT-4 will not be queried.");
+    console.log("Since there are no matches, GPT will not be queried.");
   }
 };
 

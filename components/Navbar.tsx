@@ -14,8 +14,9 @@ import DarkModeToggle from "./Toggle/DarkModeToggle";
 import { ThemeContext } from "../utils/context";
 import { useTheme } from "@/lib/hooks";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+
+const session = true;
 
 type NavbarProps = {
   children?: React.ReactNode;
@@ -35,8 +36,6 @@ const Navbar = ({ children }: NavbarProps) => {
 
   const [theme, toggleTheme] = useTheme();
   const themeMode = theme === "business" ? "dark" : "light"; // for tailwind CSS dark: prefix to work
-
-  const { data: session, status } = useSession();
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
@@ -85,7 +84,7 @@ const Navbar = ({ children }: NavbarProps) => {
                 </CustomLink>
               </div>
               <div className="hidden lg:flex">
-                <CustomLink
+                {/* <CustomLink
                   href="/fe-playground"
                   className="mx-2 font-semibold"
                 >
@@ -96,7 +95,7 @@ const Navbar = ({ children }: NavbarProps) => {
                   className="mx-2 font-semibold"
                 >
                   BE Playground
-                </CustomLink>
+                </CustomLink> */}
                 <div className="mx-4">
                   <DarkModeToggle />
                 </div>
@@ -209,7 +208,7 @@ const Navbar = ({ children }: NavbarProps) => {
                     }
                   >
                     <IoMdPerson />
-                    {session?.user?.name}
+                    {/* {session?.user?.name} */}
                   </Link>
                   <Link
                     className="ml-2 flex items-center gap-x-2 py-4"

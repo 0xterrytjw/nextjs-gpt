@@ -28,14 +28,30 @@ const Chat = () => {
     setLoading(true);
 
     try {
-      const result = await fetch("/api/read", {
+      const res = await fetch("/api/read", {
         method: "POST",
         body: JSON.stringify(query),
       });
-      const json = await result.json();
 
-      setResult(json.data);
       setLoading(false);
+
+      const stream = res.body;
+      const reader = stream?.getReader();
+
+      try {
+        while (true) {
+          // @ts-ignore
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+
+          const decodedValue = new TextDecoder().decode(value);
+          setResult((prev) => prev + decodedValue);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     } catch (err) {
       console.log("err:", err);
       setLoading(false);
@@ -57,12 +73,12 @@ const Chat = () => {
       {loading && <p>Asking AI ...</p>}
       {result && <p>{result}</p>}
       {/* consider removing this button from the UI once the embeddings are created ... */}
-      <button
+      {/* <button
         className="mt-2 rounded-2xl bg-gray-300 px-7 py-1 text-black"
         onClick={createIndexAndEmbeddings}
       >
         Create index and embeddings
-      </button>
+      </button> */}
     </main>
   );
 };

@@ -3,6 +3,8 @@ import { PineconeClient } from "@pinecone-database/pinecone";
 import { queryPineconeVectorStoreAndQueryLLM } from "@/utils/langchain-helpers";
 import { indexName } from "@/config";
 
+export const runtime = "edge"; // 'nodejs' is the default
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const client = new PineconeClient(); // Create a new Pinecone client to interact with the API
@@ -11,13 +13,16 @@ export async function POST(req: NextRequest) {
     environment: process.env.PINECONE_ENVIRONMENT || "",
   });
 
-  const text = await queryPineconeVectorStoreAndQueryLLM(
+  const stream = await queryPineconeVectorStoreAndQueryLLM(
     client,
     indexName,
     body
   );
 
-  return NextResponse.json({
-    data: text,
+  return new NextResponse(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+    },
   });
 }
