@@ -21,7 +21,17 @@ export async function POST(req: NextRequest) {
 
   return new NextResponse(stream, {
     headers: {
+      // "text/event-stream" is used for Server-Sent Events (SSE),
+      // which is a standard allowing a web page to get updates from
+      // a server over HTTP connection. This means that the server will
+      // keep the connection open and send new data as it becomes available.
       "Content-Type": "text/event-stream",
+
+      // The "no-cache" directive means that the client is allowed to cache
+      // the response, but must first submit a validation request to the server
+      // before using the cached data for subsequent requests. This is typically
+      // used when the server wants the client to always check for newer versions
+      // of the data before using the cached copy.
       "Cache-Control": "no-cache",
     },
   });

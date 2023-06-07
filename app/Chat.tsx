@@ -70,8 +70,12 @@ const Chat = () => {
       >
         Ask AI
       </button>
-      {loading && <p>Asking AI ...</p>}
-      {result && <p>{result}</p>}
+
+      <div className="mt-8">
+        {loading && <p>Asking AI ...</p>}
+        {result && <p>{result}</p>}
+      </div>
+
       {/* consider removing this button from the UI once the embeddings are created ... */}
       {/* <button
         className="mt-2 rounded-2xl bg-gray-300 px-7 py-1 text-black"

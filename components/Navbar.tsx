@@ -63,7 +63,7 @@ const Navbar = ({ children }: NavbarProps) => {
                   href="/"
                   className="text-xl font-extrabold tracking-tighter"
                 >
-                  T2 Template 2.0
+                  Ask Next.js
                   <span className="ml-1.5">
                     {theme === "business" ? (
                       <Image

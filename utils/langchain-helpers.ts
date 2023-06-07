@@ -71,7 +71,7 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
 
     // 9. Execute the chain with input documents and question
     const augmentedQuestion = `Question: ${question} 
-                                Condition: Answer the question with a short summary and tell me which section of the documentation to read more about the question. Only use information on Next.js 13 and in the context of the app/ directory.`;
+                                Condition: Answer the question with a short summary and tell me which section of the documentation to read more about the question.`;
 
     chain.call({
       input_documents: [new Document({ pageContent: concatenatedPageContent })],
