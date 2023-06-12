@@ -1,6 +1,6 @@
-## AI Semantic Search
+## GPT-powered Next.js docs search
 
-Semantic search powered by LangChain, OpenAI and Next.js.
+Semantic search capabilities powered by LangChain, OpenAI and Next.js.
 
 ## Getting started
 

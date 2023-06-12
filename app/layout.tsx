@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "AI Semantic Search",
-  description: "",
+  title: "Next.js GPT",
+  description: "Ask Next.js anything. 🔍",
 };
 
 export default function RootLayout({

@@ -13,10 +13,13 @@ import CustomLink from "./CustomLink";
 import DarkModeToggle from "./Toggle/DarkModeToggle";
 import { ThemeContext } from "../utils/context";
 import { useTheme } from "@/lib/hooks";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut } from "next-auth/react";
-
-const session = true;
+import Footer from "./Footer";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 type NavbarProps = {
   children?: React.ReactNode;
@@ -63,24 +66,7 @@ const Navbar = ({ children }: NavbarProps) => {
                   href="/"
                   className="text-xl font-extrabold tracking-tighter"
                 >
-                  Ask Next.js
-                  <span className="ml-1.5">
-                    {theme === "business" ? (
-                      <Image
-                        src="/svgs/aethero-logo-white.svg"
-                        alt="aethero logo"
-                        width={20}
-                        height={20}
-                      />
-                    ) : (
-                      <Image
-                        src="/svgs/aethero-logo-black.svg"
-                        alt="aethero logo"
-                        width={20}
-                        height={20}
-                      />
-                    )}
-                  </span>
+                  Next.js GPT
                 </CustomLink>
               </div>
               <div className="hidden lg:flex">
@@ -96,71 +82,31 @@ const Navbar = ({ children }: NavbarProps) => {
                 >
                   BE Playground
                 </CustomLink> */}
+                <div className="mr-4 font-semibold">
+                  <Popover>
+                    <PopoverTrigger>Features</PopoverTrigger>
+                    <PopoverContent className="mt-2">
+                      <ul className="font-medium">
+                        <li>🚀 LangChain</li>
+                        <li>🚀 OpenAI GPT-3.5-turbo</li>
+                        <li>🚀 OpenAI Embedding</li>
+                        <li>🚀 Streaming</li>
+                      </ul>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
                 <div className="mx-4">
                   <DarkModeToggle />
                 </div>
-                {session ? (
-                  <div className="dropdown-end dropdown mr-6">
-                    <label
-                      tabIndex={0}
-                      className="btn-ghost btn-circle avatar btn"
-                    >
-                      {/* <div className="w-10 rounded-full">
-                      <img src="https://placeimg.com/80/80/people" />
-                    </div> */}
-                      <Avatar>
-                        <AvatarImage
-                          src="https://placeimg.com/80/80/people"
-                          alt="profile"
-                        />
-                        <AvatarFallback>...</AvatarFallback>
-                      </Avatar>
-                    </label>
-                    <ul
-                      tabIndex={0}
-                      className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
-                    >
-                      <li>
-                        <button onClick={() => alert("Profile page")}>
-                          Account
-                        </button>
-                      </li>
-                      <li>
-                        <button onClick={() => signOut()}>Logout</button>
-                      </li>
-                    </ul>
-                  </div>
-                ) : (
-                  <div className="dropdown-end dropdown mr-6">
-                    <label
-                      tabIndex={0}
-                      className="btn-ghost btn-circle avatar btn"
-                    >
-                      {/* <div className="w-10 rounded-full">
-                      <img src="https://placeimg.com/80/80/people" />
-                    </div> */}
-                      <Avatar>
-                        <AvatarFallback>
-                          <IoMdPerson />
-                        </AvatarFallback>
-                      </Avatar>
-                    </label>
-                    <ul
-                      tabIndex={0}
-                      className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
-                    >
-                      <li>
-                        <a href="/api/auth/signin">Login</a>
-                      </li>
-                    </ul>
-                  </div>
-                )}
               </div>
             </div>
-
             {/* <!-- Page content here --> */}
             <div className="h-20" />
+
             {children}
+
+            <Footer />
           </div>
           <div className="drawer-side">
             <label htmlFor="drawer-toggle" className="drawer-overlay"></label>
@@ -172,83 +118,12 @@ const Navbar = ({ children }: NavbarProps) => {
                   Home
                 </Link>
               </li>
-              <li>
-                <Link href="/fe-playground" className="active:bg-white/0">
-                  <FaTv />
-                  FE Playground
-                </Link>
-              </li>
-              <li>
-                <Link href="/be-playground" className="active:bg-white/0">
-                  <FaDatabase />
-                  BE Playground
-                </Link>
-              </li>
 
               <div className="divider mt-auto" />
 
               <div className="ml-2 pb-4">
                 <DarkModeToggle />
               </div>
-
-              {session ? (
-                <>
-                  <Link
-                    className="ml-2 flex items-center gap-x-2 py-4"
-                    href="#"
-                    onClick={() =>
-                      toast("Logged in", {
-                        icon: "✅",
-                        style: {
-                          borderRadius: "1rem",
-                          background: "#333",
-                          color: "#fff",
-                        },
-                      })
-                    }
-                  >
-                    <IoMdPerson />
-                    {/* {session?.user?.name} */}
-                  </Link>
-                  <Link
-                    className="ml-2 flex items-center gap-x-2 py-4"
-                    href=""
-                    onClick={() =>
-                      signOut().then(() =>
-                        toast("Logged out", {
-                          icon: "✅",
-                          style: {
-                            borderRadius: "1rem",
-                            background: "#333",
-                            color: "#fff",
-                          },
-                        })
-                      )
-                    }
-                  >
-                    <RiLogoutCircleLine />
-                    Logout
-                  </Link>
-                </>
-              ) : (
-                <Link
-                  className="ml-2 flex items-center gap-x-2 py-4"
-                  href="/api/auth/signin"
-                  onClick={() =>
-                    toast("Logged in", {
-                      icon: "✅",
-                      style: {
-                        borderRadius: "1rem",
-                        background: "#333",
-                        color: "#fff",
-                      },
-                    })
-                  }
-                >
-                  <RiLoginCircleLine />
-                  Login
-                </Link>
-              )}
             </ul>
           </div>
         </div>

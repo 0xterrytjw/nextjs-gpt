@@ -71,7 +71,7 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
 
     // 9. Execute the chain with input documents and question
     const augmentedQuestion = `Question: ${question} 
-                                Condition: Answer the question with a short summary and tell me which section of the documentation to read more about the question.`;
+                                Condition: End with a URL on where to find more information about the question, only if you know the answer.`;
 
     chain.call({
       input_documents: [new Document({ pageContent: concatenatedPageContent })],
